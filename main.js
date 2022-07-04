@@ -4,9 +4,11 @@ const controls = document.querySelectorAll('.control');
 const SCREEN_LIMIT = 11;
 const maxValue = getMaxValue(SCREEN_LIMIT);
 
-let previousNumber;
-let operator;
+let previousNumber = null;
+let operator = null;
 let reset = false;
+let screenContent = '0';
+updateScreen();
 
 digits.forEach((digit) => {
   digit.addEventListener('click', addNumber);
@@ -14,9 +16,7 @@ digits.forEach((digit) => {
 controls.forEach((control) => {
   control.addEventListener('click', handleControl);
 });
-
-let screenContent = '0';
-updateScreen();
+document.querySelector('.btn-clear').addEventListener('click', resetAll);
 
 function addNumber(e) {
   const number =
@@ -34,7 +34,6 @@ function addNumber(e) {
   if (screenContent.length >= SCREEN_LIMIT) {
     return;
   }
-
   if (number === 0 && screenContent === '0') {
     return;
   }
@@ -54,10 +53,10 @@ function updateScreen(forcedValue) {
   if (forcedValue) {
     screenContent = '' + forcedValue;
   }
-
+  let tooBig = false;
   if (screenContent.length > SCREEN_LIMIT) {
     if (+screenContent > maxValue) {
-      console.warn('Result is too big to fit the screen!');
+      tooBig = true;
       screenContent = maxValue;
     } else {
       const contentArray = Array.from(screenContent);
@@ -69,6 +68,9 @@ function updateScreen(forcedValue) {
   }
   screenContent = '' + screenContent;
   screen.textContent = screenContent;
+  if (tooBig) {
+    alert('The number is too big to fit the screen!');
+  }
 }
 
 function add(num1, num2) {
@@ -137,7 +139,15 @@ function handleControl(e) {
 function getMaxValue(max) {
   let maxValue = '';
   for (i = 0; i < max; i++) {
-    maxValue += 9;
+    maxValue += '9';
   }
   return maxValue;
+}
+
+function resetAll() {
+  screenContent = '0';
+  previousNumber = null;
+  operator = null;
+  reset = false;
+  screen.textContent = screenContent;
 }
