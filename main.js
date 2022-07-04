@@ -18,9 +18,7 @@ updateScreen();
 
 function addNumber(e) {
   const number =
-    e.currentTarget.textContent !== ','
-      ? +e.currentTarget.textContent
-      : e.currentTarget.textContent;
+    e.currentTarget.textContent !== ',' ? +e.currentTarget.textContent : '.';
   const SCREEN_LIMIT = 12;
   if (reset) {
     screenContent = '';
@@ -37,7 +35,7 @@ function addNumber(e) {
     return;
   }
   if (screenContent === '0') {
-    if (number !== ',') {
+    if (number !== '.') {
       screenContent = '';
     }
     screenContent += '' + number;
@@ -56,20 +54,23 @@ function updateScreen(forcedValue) {
 }
 
 function add(num1, num2) {
-  return +num1 + +num2;
+  const result = +num1 + +num2;
+  return parseFloat(result.toFixed(12));
 }
 function subtract(num1, num2) {
-  return +num1 - +num2;
+  const result = +num1 - +num2;
+  return parseFloat(result.toFixed(12));
 }
 function multiply(num1, num2) {
-  return +num1 * +num2;
+  const result = +num1 * +num2;
+  return parseFloat(result.toFixed(12));
 }
 function divide(num1, num2) {
-  return +num1 / +num2;
+  const result = +num1 / +num2;
+  return parseFloat(result.toFixed(12));
 }
 
 function operate(num1, num2, operator) {
-  console.log(num1, num2, operator);
   let result = 0;
   switch (operator) {
     case '+':
@@ -85,6 +86,7 @@ function operate(num1, num2, operator) {
       result = divide(num1, num2);
       break;
   }
+  console.log(num1, operator, num2, '=', result);
   return result;
 }
 
@@ -96,6 +98,9 @@ function handleControl(e) {
     }
   }
   if (!previousNumber) {
+    if (pressed === '=') {
+      return;
+    }
     previousNumber = screenContent;
     reset = true;
     return;
