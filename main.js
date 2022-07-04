@@ -3,7 +3,6 @@ const screen = document.querySelector('.screen');
 const controls = document.querySelectorAll('.control');
 
 let previousNumber;
-let currentNumber;
 let operator;
 let reset = false;
 
@@ -25,7 +24,7 @@ function addNumber(e) {
   const SCREEN_LIMIT = 12;
   if (reset) {
     screenContent = '';
-    screenContent += number;
+    screenContent += '' + number;
     updateScreen();
     reset = false;
     return;
@@ -41,11 +40,11 @@ function addNumber(e) {
     if (number !== ',') {
       screenContent = '';
     }
-    screenContent += number;
+    screenContent += '' + number;
     updateScreen();
     return;
   }
-  screenContent += number;
+  screenContent += '' + number;
   updateScreen();
 }
 
@@ -70,6 +69,7 @@ function divide(num1, num2) {
 }
 
 function operate(num1, num2, operator) {
+  console.log(num1, num2, operator);
   let result = 0;
   switch (operator) {
     case '+':
@@ -89,11 +89,24 @@ function operate(num1, num2, operator) {
 }
 
 function handleControl(e) {
-  operator = e.currentTarget.textContent;
-  if (operator === '=') {
+  const pressed = e.currentTarget.textContent;
+  if (pressed !== '=') {
+    if (!operator) {
+      operator = e.currentTarget.textContent;
+    }
   }
-  if (!currentNumber && !previousNumber) {
+  if (!previousNumber) {
     previousNumber = screenContent;
     reset = true;
+    return;
   }
+  updateScreen(operate(previousNumber, screenContent, operator));
+  if (pressed === '=') {
+    operator = null;
+    previousNumber = null;
+    return;
+  }
+  operator = pressed;
+  previousNumber = screenContent;
+  reset = true;
 }
