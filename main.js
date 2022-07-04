@@ -1,5 +1,6 @@
 const digits = document.querySelectorAll('.digit');
-const screen = document.querySelector('.screen');
+const screen = document.querySelector('.screen-content');
+const currentOperator = document.querySelector('.current-operator');
 const controls = document.querySelectorAll('.control');
 const SCREEN_LIMIT = 11;
 const maxValue = getMaxValue(SCREEN_LIMIT);
@@ -116,6 +117,7 @@ function handleControl(e) {
     if (!operator) {
       operator = e.currentTarget.textContent;
     }
+    currentOperator.textContent = operator;
   }
   if (!previousNumber) {
     if (pressed === '=') {
@@ -129,9 +131,11 @@ function handleControl(e) {
   if (pressed === '=') {
     operator = null;
     previousNumber = null;
+    currentOperator.textContent = '';
     return;
   }
   operator = pressed;
+  currentOperator.textContent = operator;
   previousNumber = screenContent;
   reset = true;
 }
@@ -150,4 +154,5 @@ function resetAll() {
   operator = null;
   reset = false;
   screen.textContent = screenContent;
+  currentOperator.textContent = '';
 }

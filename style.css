@@ -37,6 +37,22 @@ body {
   line-height: 100%;
   font-size: 3em;
   padding: 0 10px;
+  position: relative;
+}
+.current-operator {
+  position: absolute;
+  height: 100%;
+  width: 80px;
+  background-color: transparent;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  opacity: 0.5;
+}
+.screen-content {
+  z-index: 1;
 }
 .calculator-controls {
   display: flex;
