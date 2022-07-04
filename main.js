@@ -1,6 +1,8 @@
 const digits = document.querySelectorAll('.digit');
 const screen = document.querySelector('.screen');
 const controls = document.querySelectorAll('.control');
+const SCREEN_LIMIT = 11;
+const maxValue = getMaxValue(SCREEN_LIMIT);
 
 let previousNumber;
 let operator;
@@ -19,7 +21,9 @@ updateScreen();
 function addNumber(e) {
   const number =
     e.currentTarget.textContent !== ',' ? +e.currentTarget.textContent : '.';
-  const SCREEN_LIMIT = 12;
+  if (number === '.' && screenContent.includes('.')) {
+    return;
+  }
   if (reset) {
     screenContent = '';
     screenContent += '' + number;
@@ -48,26 +52,40 @@ function addNumber(e) {
 
 function updateScreen(forcedValue) {
   if (forcedValue) {
-    screenContent = forcedValue;
+    screenContent = '' + forcedValue;
   }
+
+  if (screenContent.length > SCREEN_LIMIT) {
+    if (+screenContent > maxValue) {
+      console.warn('Result is too big to fit the screen!');
+      screenContent = maxValue;
+    } else {
+      const contentArray = Array.from(screenContent);
+      const beforeDecimals = contentArray.indexOf('.');
+      const possibleDecimals = SCREEN_LIMIT - beforeDecimals;
+      screenContent = +screenContent;
+      screenContent = screenContent.toFixed(possibleDecimals);
+    }
+  }
+  screenContent = '' + screenContent;
   screen.textContent = screenContent;
 }
 
 function add(num1, num2) {
   const result = +num1 + +num2;
-  return parseFloat(result.toFixed(12));
+  return parseFloat(result.toFixed(SCREEN_LIMIT));
 }
 function subtract(num1, num2) {
   const result = +num1 - +num2;
-  return parseFloat(result.toFixed(12));
+  return parseFloat(result.toFixed(SCREEN_LIMIT));
 }
 function multiply(num1, num2) {
   const result = +num1 * +num2;
-  return parseFloat(result.toFixed(12));
+  return parseFloat(result.toFixed(SCREEN_LIMIT));
 }
 function divide(num1, num2) {
   const result = +num1 / +num2;
-  return parseFloat(result.toFixed(12));
+  return parseFloat(result.toFixed(SCREEN_LIMIT));
 }
 
 function operate(num1, num2, operator) {
@@ -114,4 +132,12 @@ function handleControl(e) {
   operator = pressed;
   previousNumber = screenContent;
   reset = true;
+}
+
+function getMaxValue(max) {
+  let maxValue = '';
+  for (i = 0; i < max; i++) {
+    maxValue += 9;
+  }
+  return maxValue;
 }
