@@ -72,11 +72,11 @@ body {
   flex-wrap: wrap;
   width: 25%;
 }
-.control {
+.operators .control {
   width: 100%;
   background-color: orangered;
 }
-.control:hover {
+.operators .control:hover {
   background-color: rgb(255, 114, 62);
 }
 .btn-clear {

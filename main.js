@@ -1,20 +1,39 @@
 const digits = document.querySelectorAll('.digit');
 const screen = document.querySelector('.screen');
+const controls = document.querySelectorAll('.control');
+
+let previousNumber;
+let currentNumber;
+let operator;
+let reset = false;
+
 digits.forEach((digit) => {
   digit.addEventListener('click', addNumber);
+});
+controls.forEach((control) => {
+  control.addEventListener('click', handleControl);
 });
 
 let screenContent = '0';
 updateScreen();
+
 function addNumber(e) {
-  const SCREEN_LIMIT = 12;
-  if (screenContent.length >= SCREEN_LIMIT) {
-    return;
-  }
   const number =
     e.currentTarget.textContent !== ','
       ? +e.currentTarget.textContent
       : e.currentTarget.textContent;
+  const SCREEN_LIMIT = 12;
+  if (reset) {
+    screenContent = '';
+    screenContent += number;
+    updateScreen();
+    reset = false;
+    return;
+  }
+  if (screenContent.length >= SCREEN_LIMIT) {
+    return;
+  }
+
   if (number === 0 && screenContent === '0') {
     return;
   }
@@ -67,4 +86,14 @@ function operate(num1, num2, operator) {
       break;
   }
   return result;
+}
+
+function handleControl(e) {
+  operator = e.currentTarget.textContent;
+  if (operator === '=') {
+  }
+  if (!currentNumber && !previousNumber) {
+    previousNumber = screenContent;
+    reset = true;
+  }
 }
