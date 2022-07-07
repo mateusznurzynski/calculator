@@ -35,7 +35,7 @@ body {
   height: 100px;
   background-color: white;
   line-height: 100%;
-  font-size: 3em;
+  font-size: 1.5em;
   padding: 0 10px;
   position: relative;
 }
@@ -52,6 +52,7 @@ body {
   opacity: 0.5;
 }
 .screen-content {
+  max-width: 100%;
   z-index: 1;
 }
 .calculator-controls {

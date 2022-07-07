@@ -2,7 +2,7 @@ const digits = document.querySelectorAll('.digit');
 const screen = document.querySelector('.screen-content');
 const currentOperator = document.querySelector('.current-operator');
 const controls = document.querySelectorAll('.control');
-const SCREEN_LIMIT = 11;
+const SCREEN_LIMIT = 16;
 const maxValue = getMaxValue(SCREEN_LIMIT);
 
 function getMaxValue(max) {
@@ -69,7 +69,7 @@ function addNumber(e, forcedNumber) {
   if (reset) {
     screenContent = '';
     screenContent += '' + number;
-    updateScreen();
+    updateScreen(null, true);
     reset = false;
     return;
   }
@@ -84,11 +84,11 @@ function addNumber(e, forcedNumber) {
       screenContent = '';
     }
     screenContent += '' + number;
-    updateScreen();
+    updateScreen(null, true);
     return;
   }
   screenContent += '' + number;
-  updateScreen();
+  updateScreen(null, true);
 }
 
 function handleControl(e, forcedControl) {
@@ -133,28 +133,16 @@ function handleControl(e, forcedControl) {
   }
 }
 
-function updateScreen(forcedValue) {
+function updateScreen(forcedValue, ignoreDecimals = false) {
   if (forcedValue) {
     screenContent = '' + forcedValue;
   }
-  let tooBig = false;
-  if (screenContent.length > SCREEN_LIMIT) {
-    if (+screenContent > maxValue) {
-      tooBig = true;
-      screenContent = maxValue;
-    } else {
-      const contentArray = Array.from(screenContent);
-      const beforeDecimals = contentArray.indexOf('.');
-      const possibleDecimals = SCREEN_LIMIT - beforeDecimals;
-      screenContent = +screenContent;
-      screenContent = screenContent.toFixed(possibleDecimals);
-    }
+  if (!ignoreDecimals) {
+    screenContent = +screenContent;
+    screenContent = parseFloat(screenContent.toFixed(3));
   }
   screenContent = '' + screenContent;
   screen.textContent = screenContent;
-  if (tooBig) {
-    alert('The number is too big to fit the screen!');
-  }
 }
 
 function resetAll() {
