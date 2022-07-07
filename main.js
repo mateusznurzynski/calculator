@@ -42,10 +42,15 @@ function handleKeyboard(e) {
     '8',
     '9',
     ',',
+    '.',
   ];
   const possibleControls = ['*', '-', '+', '/', '=', 'Enter'];
   if (possibleDigits.includes(e.key)) {
-    addNumber(e, e.key);
+    let key = e.key;
+    if (key === ',') {
+      key = '.';
+    }
+    addNumber(e, key);
   } else if (possibleControls.includes(e.key)) {
     handleControl(e, e.key);
   }
