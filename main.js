@@ -116,6 +116,10 @@ function operate(num1, num2, operator) {
 function handleControl(e) {
   const pressed = e.currentTarget.textContent;
   if (operatorUsed) {
+    if (pressed !== '=') {
+      operator = pressed;
+      currentOperator.textContent = operator;
+    }
     return;
   } else {
     operatorUsed = true;
