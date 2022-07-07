@@ -26,12 +26,38 @@ digits.forEach((digit) => {
 controls.forEach((control) => {
   control.addEventListener('click', handleControl);
 });
+document.addEventListener('keydown', handleKeyboard);
 document.querySelector('.btn-clear').addEventListener('click', resetAll);
 
-function addNumber(e) {
+function handleKeyboard(e) {
+  const possibleDigits = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    ',',
+  ];
+  const possibleControls = ['*', '-', '+', '/', '=', 'Enter'];
+  if (possibleDigits.includes(e.key)) {
+    addNumber(e, e.key);
+  } else if (possibleControls.includes(e.key)) {
+    handleControl(e, e.key);
+  }
+}
+
+function addNumber(e, forcedNumber) {
   operatorUsed = false;
-  const number =
-    e.currentTarget.textContent !== ',' ? +e.currentTarget.textContent : '.';
+  const number = forcedNumber
+    ? forcedNumber
+    : e.currentTarget.textContent !== ','
+    ? +e.currentTarget.textContent
+    : '.';
   if (number === '.' && screenContent.includes('.')) {
     return;
   }
@@ -60,8 +86,11 @@ function addNumber(e) {
   updateScreen();
 }
 
-function handleControl(e) {
-  const pressed = e.currentTarget.textContent;
+function handleControl(e, forcedControl) {
+  let pressed = forcedControl ? forcedControl : e.currentTarget.textContent;
+  if (pressed === 'Enter') {
+    pressed = '=';
+  }
   if (operatorUsed) {
     if (pressed !== '=') {
       operator = pressed;
@@ -72,7 +101,7 @@ function handleControl(e) {
     operatorUsed = true;
     if (pressed !== '=') {
       if (!operator) {
-        operator = e.currentTarget.textContent;
+        operator = pressed;
       }
       currentOperator.textContent = operator;
     }
