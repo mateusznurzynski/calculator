@@ -5,6 +5,14 @@ const controls = document.querySelectorAll('.control');
 const SCREEN_LIMIT = 11;
 const maxValue = getMaxValue(SCREEN_LIMIT);
 
+function getMaxValue(max) {
+  let maxValue = '';
+  for (i = 0; i < max; i++) {
+    maxValue += '9';
+  }
+  return maxValue;
+}
+
 let previousNumber = null;
 let operator = null;
 let reset = false;
@@ -52,67 +60,6 @@ function addNumber(e) {
   updateScreen();
 }
 
-function updateScreen(forcedValue) {
-  if (forcedValue) {
-    screenContent = '' + forcedValue;
-  }
-  let tooBig = false;
-  if (screenContent.length > SCREEN_LIMIT) {
-    if (+screenContent > maxValue) {
-      tooBig = true;
-      screenContent = maxValue;
-    } else {
-      const contentArray = Array.from(screenContent);
-      const beforeDecimals = contentArray.indexOf('.');
-      const possibleDecimals = SCREEN_LIMIT - beforeDecimals;
-      screenContent = +screenContent;
-      screenContent = screenContent.toFixed(possibleDecimals);
-    }
-  }
-  screenContent = '' + screenContent;
-  screen.textContent = screenContent;
-  if (tooBig) {
-    alert('The number is too big to fit the screen!');
-  }
-}
-
-function add(num1, num2) {
-  const result = +num1 + +num2;
-  return parseFloat(result.toFixed(SCREEN_LIMIT));
-}
-function subtract(num1, num2) {
-  const result = +num1 - +num2;
-  return parseFloat(result.toFixed(SCREEN_LIMIT));
-}
-function multiply(num1, num2) {
-  const result = +num1 * +num2;
-  return parseFloat(result.toFixed(SCREEN_LIMIT));
-}
-function divide(num1, num2) {
-  const result = +num1 / +num2;
-  return parseFloat(result.toFixed(SCREEN_LIMIT));
-}
-
-function operate(num1, num2, operator) {
-  let result = 0;
-  switch (operator) {
-    case '+':
-      result = add(num1, num2);
-      break;
-    case '-':
-      result = subtract(num1, num2);
-      break;
-    case '*':
-      result = multiply(num1, num2);
-      break;
-    case '/':
-      result = divide(num1, num2);
-      break;
-  }
-  console.log(num1, operator, num2, '=', result);
-  return result;
-}
-
 function handleControl(e) {
   const pressed = e.currentTarget.textContent;
   if (operatorUsed) {
@@ -152,12 +99,28 @@ function handleControl(e) {
   }
 }
 
-function getMaxValue(max) {
-  let maxValue = '';
-  for (i = 0; i < max; i++) {
-    maxValue += '9';
+function updateScreen(forcedValue) {
+  if (forcedValue) {
+    screenContent = '' + forcedValue;
   }
-  return maxValue;
+  let tooBig = false;
+  if (screenContent.length > SCREEN_LIMIT) {
+    if (+screenContent > maxValue) {
+      tooBig = true;
+      screenContent = maxValue;
+    } else {
+      const contentArray = Array.from(screenContent);
+      const beforeDecimals = contentArray.indexOf('.');
+      const possibleDecimals = SCREEN_LIMIT - beforeDecimals;
+      screenContent = +screenContent;
+      screenContent = screenContent.toFixed(possibleDecimals);
+    }
+  }
+  screenContent = '' + screenContent;
+  screen.textContent = screenContent;
+  if (tooBig) {
+    alert('The number is too big to fit the screen!');
+  }
 }
 
 function resetAll() {
@@ -168,4 +131,41 @@ function resetAll() {
   operatorUsed = false;
   screen.textContent = screenContent;
   currentOperator.textContent = '';
+}
+
+function operate(num1, num2, operator) {
+  let result = 0;
+  switch (operator) {
+    case '+':
+      result = add(num1, num2);
+      break;
+    case '-':
+      result = subtract(num1, num2);
+      break;
+    case '*':
+      result = multiply(num1, num2);
+      break;
+    case '/':
+      result = divide(num1, num2);
+      break;
+  }
+  console.log(num1, operator, num2, '=', result);
+  return result;
+}
+
+function add(num1, num2) {
+  const result = +num1 + +num2;
+  return parseFloat(result.toFixed(SCREEN_LIMIT));
+}
+function subtract(num1, num2) {
+  const result = +num1 - +num2;
+  return parseFloat(result.toFixed(SCREEN_LIMIT));
+}
+function multiply(num1, num2) {
+  const result = +num1 * +num2;
+  return parseFloat(result.toFixed(SCREEN_LIMIT));
+}
+function divide(num1, num2) {
+  const result = +num1 / +num2;
+  return parseFloat(result.toFixed(SCREEN_LIMIT));
 }
