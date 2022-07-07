@@ -103,8 +103,8 @@ function handleControl(e, forcedControl) {
     }
     return;
   } else {
-    operatorUsed = true;
     if (pressed !== '=') {
+      operatorUsed = true;
       if (!operator) {
         operator = pressed;
       }
