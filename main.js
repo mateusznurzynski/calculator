@@ -8,6 +8,7 @@ const maxValue = getMaxValue(SCREEN_LIMIT);
 let previousNumber = null;
 let operator = null;
 let reset = false;
+let operatorUsed = false;
 let screenContent = '0';
 updateScreen();
 
@@ -20,6 +21,7 @@ controls.forEach((control) => {
 document.querySelector('.btn-clear').addEventListener('click', resetAll);
 
 function addNumber(e) {
+  operatorUsed = false;
   const number =
     e.currentTarget.textContent !== ',' ? +e.currentTarget.textContent : '.';
   if (number === '.' && screenContent.includes('.')) {
@@ -113,31 +115,37 @@ function operate(num1, num2, operator) {
 
 function handleControl(e) {
   const pressed = e.currentTarget.textContent;
-  if (pressed !== '=') {
-    if (!operator) {
-      operator = e.currentTarget.textContent;
+  if (operatorUsed) {
+    return;
+  } else {
+    operatorUsed = true;
+    if (pressed !== '=') {
+      if (!operator) {
+        operator = e.currentTarget.textContent;
+      }
+      currentOperator.textContent = operator;
     }
-    currentOperator.textContent = operator;
-  }
-  if (!previousNumber) {
-    if (pressed === '=') {
+    if (!previousNumber) {
+      if (pressed === '=') {
+        return;
+      }
+      previousNumber = screenContent;
+      reset = true;
       return;
     }
+    updateScreen(operate(previousNumber, screenContent, operator));
+    if (pressed === '=') {
+      operator = null;
+      previousNumber = null;
+      currentOperator.textContent = '';
+      reset = true;
+      return;
+    }
+    operator = pressed;
+    currentOperator.textContent = operator;
     previousNumber = screenContent;
     reset = true;
-    return;
   }
-  updateScreen(operate(previousNumber, screenContent, operator));
-  if (pressed === '=') {
-    operator = null;
-    previousNumber = null;
-    currentOperator.textContent = '';
-    return;
-  }
-  operator = pressed;
-  currentOperator.textContent = operator;
-  previousNumber = screenContent;
-  reset = true;
 }
 
 function getMaxValue(max) {
@@ -153,6 +161,7 @@ function resetAll() {
   previousNumber = null;
   operator = null;
   reset = false;
+  operatorUsed = false;
   screen.textContent = screenContent;
   currentOperator.textContent = '';
 }
