@@ -3,15 +3,6 @@ const screen = document.querySelector('.screen-content');
 const currentOperator = document.querySelector('.current-operator');
 const controls = document.querySelectorAll('.control');
 const SCREEN_LIMIT = 16;
-const maxValue = getMaxValue(SCREEN_LIMIT);
-
-function getMaxValue(max) {
-  let maxValue = '';
-  for (i = 0; i < max; i++) {
-    maxValue += '9';
-  }
-  return maxValue;
-}
 
 let previousNumber = null;
 let operator = null;
@@ -45,7 +36,7 @@ function handleKeyboard(e) {
     ',',
     '.',
   ];
-  const possibleControls = ['*', '-', '+', '/', '=', 'Enter'];
+  const possibleControls = ['*', '-', '+', '/', '=', 'Enter', 'Backspace'];
   if (possibleDigits.includes(e.key)) {
     let key = e.key;
     if (key === ',') {
@@ -53,6 +44,10 @@ function handleKeyboard(e) {
     }
     addNumber(e, key);
   } else if (possibleControls.includes(e.key)) {
+    if (e.key === 'Backspace') {
+      deleteLastDigit();
+      return;
+    }
     handleControl(e, e.key);
   }
 }
