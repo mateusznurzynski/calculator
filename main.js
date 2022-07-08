@@ -185,17 +185,17 @@ function operate(num1, num2, operator) {
 
 function add(num1, num2) {
   const result = +num1 + +num2;
-  return parseFloat(result.toFixed(SCREEN_LIMIT));
+  return parseFloat(result.toFixed(10));
 }
 function subtract(num1, num2) {
   const result = +num1 - +num2;
-  return parseFloat(result.toFixed(SCREEN_LIMIT));
+  return parseFloat(result.toFixed(10));
 }
 function multiply(num1, num2) {
   const result = +num1 * +num2;
-  return parseFloat(result.toFixed(SCREEN_LIMIT));
+  return parseFloat(result.toFixed(10));
 }
 function divide(num1, num2) {
   const result = +num1 / +num2;
-  return parseFloat(result.toFixed(SCREEN_LIMIT));
+  return parseFloat(result.toFixed(10));
 }
