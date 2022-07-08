@@ -28,6 +28,7 @@ controls.forEach((control) => {
 });
 document.addEventListener('keydown', handleKeyboard);
 document.querySelector('.btn-clear').addEventListener('click', resetAll);
+document.querySelector('.btn-del').addEventListener('click', deleteLastDigit);
 
 function handleKeyboard(e) {
   const possibleDigits = [
@@ -143,6 +144,18 @@ function updateScreen(forcedValue, ignoreDecimals = false) {
   }
   screenContent = '' + screenContent;
   screen.textContent = screenContent;
+}
+
+function deleteLastDigit() {
+  if (reset) {
+    return;
+  }
+  if (screenContent.length === 1) {
+    screenContent = '0';
+  } else {
+    screenContent = screenContent.slice(0, screenContent.length - 1);
+  }
+  updateScreen(null, true);
 }
 
 function resetAll() {

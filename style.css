@@ -96,11 +96,19 @@ body {
 .operators .control:hover {
   background-color: rgb(255, 114, 62);
 }
-.btn-clear {
-  background-color: rgb(211, 31, 31);
+.delete-buttons {
   width: 100%;
+  height: 25%;
   margin: 5px 0 3px;
+  display: flex;
 }
-.btn-clear:hover {
+.btn-clear,
+.btn-del {
+  background-color: rgb(211, 31, 31);
+  width: 25%;
+  height: 100%;
+}
+.btn-clear:hover,
+.btn-del:hover {
   background-color: rgb(255, 31, 31);
 }
