@@ -179,7 +179,6 @@ function operate(num1, num2, operator) {
       result = divide(num1, num2);
       break;
   }
-  console.log(num1, operator, num2, '=', result);
   return result;
 }
 
